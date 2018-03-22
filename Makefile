@@ -17,3 +17,6 @@ debug:
 
 release:
 	$(CC) -O3 $(CFLAGS) $(SOURCES) $(INCLUDES) -o $(BINARY)
+
+clean:
+	rm bin/intel-8080
