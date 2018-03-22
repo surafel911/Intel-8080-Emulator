@@ -5,14 +5,10 @@
 #include <memory.h>
 #include <register.h>
 
-/* TODO: Figure out what is causing linker errors
- * 		 with register_get_r and register_set_r.
- */
-
 void
 move_r(uint8_t r1, uint8_t r2)
 {
-//	register_set_r(r1, register_get_r(r2));
+	register_set_r(r1, register_get_r(r2));
 }
 
 void
@@ -34,7 +30,7 @@ move_to_m_i(uint8_t data)
 void
 move_from_m(uint8_t r)
 {
-//	register_set_r(r, memory_read(register_get_rp(REG_HL)));
+	register_set_r(r, memory_read(register_get_rp(REG_HL)));
 }
 
 void

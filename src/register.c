@@ -30,7 +30,7 @@ static struct {
 } _registers;
 
 uint8_t
-register_get(uint8_t symbol)
+register_get_r(uint8_t symbol)
 {
 	static uint8_t value;
 	switch (symbol) {
@@ -55,6 +55,9 @@ register_get(uint8_t symbol)
 		case REG_L:
 			value = _registers.l;
 		break;
+		case REG_SR:
+			value = _registers.sr;
+		break;
 		default:
 			error("Error: Invalid register symbol provided.");
 		break;
@@ -64,7 +67,7 @@ register_get(uint8_t symbol)
 }
 
 void
-register_set(uint8_t symbol, uint8_t data)
+register_set_r(uint8_t symbol, uint8_t data)
 {
 	switch (symbol) {
 		case REG_A:
@@ -87,6 +90,9 @@ register_set(uint8_t symbol, uint8_t data)
 		break;
 		case REG_L:
 			_registers.l = data;
+		break;
+		case REG_SR:
+			_registers.sr ^= data;
 		break;
 		default:
 			error("Error: Invalid register symbol provided.");
@@ -112,6 +118,9 @@ register_get_rp(uint8_t symbol)
 		case REG_SP:
 			value = _registers.sp;
 		break;
+		case REG_PC:
+			value = _registers.pc;
+		break;
 		default:
 			error("Error: Invalid register pair symbol provided.");
 		break;
@@ -136,20 +145,12 @@ register_set_rp(uint8_t symbol, uint16_t data)
 		case REG_SP:
 			_registers.sp = data;
 		break;
+		case REG_PC:
+			_registers.pc = data;
+		break;
 		default:
 			error("Error: Invalid register pair symbol provided.");
 		break;
 	}
 }
 
-uint8_t
-register_get_sr(void)
-{
-	return _registers.sr;
-}
-
-void
-register_set_sr(uint8_t data)
-{
-	_registers.sr ^= data;
-}
