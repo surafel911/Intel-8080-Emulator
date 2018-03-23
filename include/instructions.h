@@ -3,55 +3,53 @@
 #include <stdint.h>
 
 /*
- * Opcode function attributes:
+ * Instruction function attributes:
  * 
- * a	- accumulator
  * b	- borrow
  * d 	- direct
  * i 	- indirect
  * m 	- memory
- * r 	- register
- * rp	- register pair
+ */
+
+/*
+ * Functions will usually have the same name as they appear in the instruction
+ * set, but if there are multiple variants of an instruction such as indrect
+ * or direct addressing, going from or too memory, etc. In which case the
+ * the instruction name will be coupled with attributes listed above along
+ * with a word or two.
  */
 
 void
-move_r(uint8_t r1, uint8_t r2);
+mov_r(uint8_t r1, uint8_t r2);
 
 void
-move_i(uint8_t r, uint8_t data);
+mov_from_m(uint8_t r);
 
 void
-move_to_m(uint8_t r);
+mov_to_m(uint8_t r);
 
 void
-move_to_m_i(uint8_t data);
+mvi(uint8_t r, uint8_t data);
 
 void
-move_from_m(uint8_t r);
+mvi_m(uint8_t data);
 
 void
-load_rp_i(uint8_t low, uint8_t high);
+lxi(uint8_t rp, uint8_t low, uint8_t high);
 
-void
-load_a_i(uint8_t low, uint8_t high);
+/*
+ * Although instruction implentations may exist below, this marker designates
+ * that the above functions are either in development or tested and approved.
+ * Functions defined below are mearly there because I went ahead and created
+ * them as well as created a rough implementation of their respective
+ * instructions.
+ * 
+ * Typically the development of these functions progress in the order they
+ * appear in as well as the pages (i.e. instructions at page 4-5 in the order
+ * shown) they are found in the Intel 8080 Mircocomputer Systems User's Manual.
+ */
 
-void
-load_a_d(uint8_t low, uint8_t high);
-
-void
-store_a_i(uint8_t low, uint8_t high);
-
-void
-store_a_d(uint8_t low, uint8_t high);
-
-void
-load_hl_d(uint8_t low, uint8_t high);
-
-void
-store_hl_d(uint8_t low, uint8_t high);
-
-void
-exchange_hl_de(void);
+#if 0
 
 void
 add_m(void);
@@ -112,3 +110,5 @@ decrement_rp(uint8_t rp);
 
 void
 decimal_adjust_a(void);
+
+#endif
