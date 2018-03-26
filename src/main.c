@@ -27,7 +27,7 @@ main(int argc, char* argv[])
 
 //	TODO: The binary file isn't being read correctly.
 	for (index = 0; index < argc - 1; index ++) {
-		binary[index].file = fopen(argv[argc - 1], "rb");
+		binary[index].file = fopen(argv[index + 1], "rb");
 		if (binary[index].file == NULL) {
 			error("Error: Failed to load binary file \'%s\'.", argv[index + 1]);
 		}
