@@ -1,4 +1,4 @@
 #pragma once
 
 void
-error(const char* message);
+error(const char* format, ...);

@@ -3,20 +3,17 @@
 #include <stdint.h>
 
 /*
- * Instruction function attributes:
- * 
- * b	- borrow
- * d 	- direct
- * i 	- indirect
- * m 	- memory
- */
-
-/*
  * Functions will usually have the same name as they appear in the instruction
  * set, but if there are multiple variants of an instruction such as indrect
  * or direct addressing, going from or too memory, etc. In which case the
  * the instruction name will be coupled with attributes listed above along
  * with a word or two.
+ */
+
+/*
+ * Instruction function attributes:
+ * r	- register
+ * m 	- memory
  */
 
 void
@@ -36,6 +33,27 @@ mvi_m(uint8_t data);
 
 void
 lxi(uint8_t rp, uint8_t low, uint8_t high);
+
+void
+lda(uint8_t low, uint8_t high);
+
+void
+sta(uint8_t low, uint8_t high);
+
+void
+lhdl(uint8_t low, uint8_t high);
+
+void
+shld(uint8_t low, uint8_t high);
+
+void
+ldax(uint8_t rp);
+
+void
+stax(uint8_t rp);
+
+void
+xchg(void);
 
 /*
  * Although instruction implentations may exist below, this marker designates

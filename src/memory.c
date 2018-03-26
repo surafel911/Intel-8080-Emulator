@@ -8,19 +8,18 @@
 
 #include <error.h>
 
-#define PROGRAM_MAX_SIZE	0x1FFF
+#define ROM_ADDRESS_SPACE	0x1FFF
 
 static uint8_t _memory[USHRT_MAX];
 
-// TODO: Find out of there is any limit to programmable ROM.
 // TODO: Find out the starting address for ROM to be loaded.
 // TODO: Find out how many bytes are reserved for interrupts.
 
 void
 memory_load_program(const uint8_t* program, const uint16_t size)
 {
-	if (size > PROGRAM_MAX_SIZE) {
-		error("Error: Program size too large.");
+	if (size > ROM_ADDRESS_SPACE) {
+		error("Error: Program size exceeds ROM address space.");
 	}
 
 	memcpy((void*)_memory + 64, (void*)program, size * 2);
@@ -36,5 +35,8 @@ memory_read(const uint16_t location)
 void
 memory_write(const uint16_t location, const uint8_t word)
 {
+	if (location <= ROM_ADDRESS_SPACE) {
+		error("Error: Attempting to write in ROM address space.");
+	}
 	_memory[location] = word;
 }

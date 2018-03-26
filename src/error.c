@@ -1,11 +1,19 @@
 #include <error.h>
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 void
-error(const char* message)
+error(const char* format, ...)
 {
-	printf("%s\n", message);
+	va_list args;
+
+	va_start(args, format);
+	vprintf(format, args);
+	va_end(args);
+
+	printf("\n\n");
+
 	abort();
 }

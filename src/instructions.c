@@ -5,7 +5,7 @@
 #include <memory.h>
 #include <register.h>
 
-#define MAKE_RP(low, hight) ((high << 8) | low)
+#define MAKE_RP(low, high) ((high << 8) | low)
 
 void
 mov_r(uint8_t r1, uint8_t r2)
@@ -43,6 +43,54 @@ lxi(uint8_t rp, uint8_t low, uint8_t high)
 	register_set_rp(REG_HL, MAKE_RP(low, high));
 }
 
+void
+lda(uint8_t low, uint8_t high)
+{
+	register_set_r(REG_A, memory_read(MAKE_RP(low, high)));
+}
+
+void
+sta(uint8_t low, uint8_t high)
+{
+	memory_write(MAKE_RP(low, high), register_get_r(REG_A));
+}
+
+void
+lhdl(uint8_t low, uint8_t high)
+{
+	register_set_r(REG_L, memory_read(register_get_rp(MAKE_RP(low, high))));
+	register_set_r(REG_H, memory_read(register_get_rp(MAKE_RP(low, high) + 1)));
+}
+
+void
+shld(uint8_t low, uint8_t high)
+{
+	memory_write(MAKE_RP(low, high), register_get_r(REG_L));
+	memory_write(MAKE_RP(low, high) + 1, register_get_r(REG_H));
+}
+
+void
+ldax(uint8_t rp)
+{
+	register_set_r(REG_A, memory_read(register_get_rp(rp)));
+}
+
+void
+stax(uint8_t rp)
+{
+	memory_write(register_get_rp(rp), register_get_r(REG_A));
+}
+
+void
+xchg(void)
+{
+	uint16_t tmp;
+
+	tmp = register_get_rp(REG_HL);
+	register_set_rp(REG_HL, register_get_rp(REG_DE));
+	register_set_rp(REG_DE, tmp);
+}
+
 /*
  * Although instruction declarations may exist below, this marker designates
  * that the above functions are either in development or tested and approved.
@@ -56,54 +104,6 @@ lxi(uint8_t rp, uint8_t low, uint8_t high)
  */
 
 #if 0
-
-void
-load_a_d(uint8_t low, uint8_t high)
-{
-	// TODO: Research how the accumulator has a 16-bit register.
-}
-
-void
-store_a_d(uint8_t low, uint8_t high)
-{
-	// TODO: Research how the accumulator has a 16-bit register.
-}
-
-void
-load_hl_d(uint8_t low, uint8_t high)
-{
-	register_set_r(REG_L, memory_read(register_get_rp(MAKE_RP(low, high)));
-	register_set_r(REG_H, memory_read(register_get_rp(MAKE_RP(low, high) + 1)));
-}
-
-void
-store_hl_d(uint8_t low, uint8_t high)
-{
-	memory_write(MAKE_RP(low, high), register_get_r(REG_L));
-	memory_write(MAKE_RP(low, high) + 1, register_get_r(REG_H));
-}
-
-void
-ldax(uint8_t rp)
-{
-	register_set_r(REG_A, memory_read(register_get_rp(rp)));
-}
-
-void
-store_a_i(uint8_t rp)
-{
-	memory_write(register_get_rp(rp), register_get_r(REG_A));
-}
-
-void
-exchange_hl_de(void)
-{
-	uint16_t tmp;
-
-	tmp = register_get_rp(REG_HL);
-	register_set_rp(REG_HL, register_get_rp(REG_DE));
-	register_set_rp(REG_DE, tmp);
-}
 
 void
 add_m(void)

@@ -5,29 +5,55 @@
 #include <cpu.h>
 #include <error.h>
 
+static struct {
+	FILE* file;
+	uint16_t size;
+} binary[4];
+
+static struct {
+	uint8_t* code;
+	uint16_t size;
+} program;
+
 int
 main(int argc, char* argv[])
 {
-	FILE* binary;
-	uint8_t* program;
-	uint16_t size;	
+	uint8_t index;
+	uint16_t offset;
 
 	if (argc == 1) {
-		error("Error: No binary file provided.");
+		error("Error: No binary file(s) provided.");
 	}
 
-	binary = fopen(argv[argc - 1], "r");
-	if (binary == NULL) {
-		error("Error: Failed to load binary file.");
+//	TODO: The binary file isn't being read correctly.
+	for (index = 0; index < argc - 1; index ++) {
+		binary[index].file = fopen(argv[argc - 1], "rb");
+		if (binary[index].file == NULL) {
+			error("Error: Failed to load binary file \'%s\'.", argv[index + 1]);
+		}
+
+		fseek(binary[index].file, 0, SEEK_END);
+		binary[index].size = ftell(binary[index].file);
+		program.size += binary[index].size;
+		fseek(binary[index].file, 0, SEEK_SET);
 	}
 
-	fseek(binary, 0, SEEK_END);
-	size = ftell(binary);
-	fseek(binary, 0, SEEK_SET);
+	offset = 0;
+	program.code = malloc(sizeof(*program.code) * program.size);
+	for (index = 0; index < argc - 1; index ++) {
+		fread(
+			(void*)program.code + offset,
+			sizeof(*program.code),
+			binary[index].size,
+			binary[index].file
+			);
 
-	program = malloc(sizeof(*program) * ftell(binary));
-	fread((void*)program, sizeof(*program), size, binary);
-	fclose(binary);
+		offset += binary[index].size;
+	}
 
-	cpu_run((const uint8_t*)program, (const uint16_t)size);
+	for (index = 0; index < argc - 1; index ++) {
+		fclose(binary[index].file);
+	}
+
+	cpu_run((const uint8_t*)program.code, (const uint16_t)program.size);
 }

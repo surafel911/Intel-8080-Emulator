@@ -20,7 +20,7 @@
 #define REG_PC				0x4
 
 #define SREG_CARRY			0x01
-#define SREG_AUX_CARRY			0x02
+#define SREG_AUX_CARRY		0x02
 #define SREG_SIGN			0x04
 #define SREG_ZERO			0x08
 #define SREG_PARITY			0x16
