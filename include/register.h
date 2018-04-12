@@ -24,6 +24,7 @@
 #define SREG_SIGN			0x04
 #define SREG_ZERO			0x08
 #define SREG_PARITY			0x16
+
 #define SREG_RUN			0x32
 
 uint8_t

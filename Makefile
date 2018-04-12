@@ -8,15 +8,13 @@ CFLAGS = \
 
 BINARY = bin/intel-8080
 
-SOURCES = src/*.c
+CPPFLAGS = -Iinclude/
 
-INCLUDES = -Iinclude/
+debug: src/*.c
+	$(CC) -g $(CFLAGS) $^ $(CPPFLAGS) -o $(BINARY)
 
-debug:
-	$(CC) -g $(CFLAGS) $(SOURCES) $(INCLUDES) -o $(BINARY)
-
-release:
-	$(CC) -O3 $(CFLAGS) $(SOURCES) $(INCLUDES) -o $(BINARY)
+release: src/*.c
+	$(CC) -O3 $(CFLAGS) $^ $(CPPFLAGS) -o $(BINARY)
 
 clean:
 	rm bin/intel-8080

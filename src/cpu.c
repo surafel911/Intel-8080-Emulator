@@ -9,7 +9,7 @@
 #include <memory.h>
 #include <register.h>
 
-static inline void
+void
 cpu_execute(void)
 {
 	static uint8_t opcode;
@@ -173,10 +173,6 @@ cpu_execute(void)
 void
 cpu_run(const uint8_t* program, const uint16_t size)
 {
-	register_set_r(REG_SR, SREG_RUN);
-	register_set_rp(REG_PC, MEM_ROM_OFFSET);
-	register_set_rp(REG_SP, MEM_RAM_OFFSET + MEM_RAM_SIZE);
-	memory_load_program(program, size);
 
 	do {
 		cpu_execute();

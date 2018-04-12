@@ -2,8 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-#include <cpu.h>
-#include <error.h>
+#include <emulator.h>
 
 static struct {
 	FILE* file;
@@ -55,5 +54,7 @@ main(int argc, char* argv[])
 		fclose(binary[index].file);
 	}
 
-	cpu_run((const uint8_t*)program.code, (const uint16_t)program.size);
+	printf("%d", sizeof(uint8_t*));
+
+//	emulator_run((const uint8_t*)program.code, (const uint16_t)program.size);
 }
